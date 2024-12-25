@@ -1,0 +1,22 @@
+html {
+  height: 100%;
+}
+
+body {
+  background: #DDF6E5;
+  height: 100%;
+  margin: 0;
+}
+
+canvas {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+img {
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
