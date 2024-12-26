@@ -1,0 +1,78 @@
+name: Build and Deploy
+defaults:
+  run:
+    shell: bash
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Get total contributions
+        run: |
+          gh api graphql -f query='
+            query {
+              viewer {
+                contributionsCollection {
+                  contributionCalendar {
+                    totalContributions
+                  }
+                }
+              }
+            }' > response.json
+
+          totalContributions="$(jq -r '.data.viewer.contributionsCollection.contributionCalendar.totalContributions' response.json)"
+          echo "TOTAL_CONTRIBUTIONS=$totalContributions" >> "${GITHUB_ENV}"
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Build static files
+        id: build
+        run: pnpm build
+        env:
+          VITE_GITHUB_TOTAL_CONTRIBUTIONS: ${{ env.TOTAL_CONTRIBUTIONS }}
+
+      - name: Upload static files as artifact
+        id: deployment
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
