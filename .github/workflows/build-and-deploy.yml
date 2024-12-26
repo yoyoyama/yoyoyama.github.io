@@ -78,3 +78,14 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  enable:
+    permissions:
+      actions: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enable workflow
+        run: gh workflow enable build-and-deploy.yml # 60日で無効化されないようにする
