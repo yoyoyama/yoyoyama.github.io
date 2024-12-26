@@ -8,15 +8,29 @@ body {
   margin: 0;
 }
 
+img {
+  display: block;
+}
+
+a:hover {
+  opacity: 0.7;
+}
+
 canvas {
   display: block;
   height: 100%;
   width: 100%;
 }
 
-img {
+.avatar {
   left: 50%;
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
+}
+
+.github {
+  position: absolute;
+  right: 16px;
+  top: 16px;
 }
