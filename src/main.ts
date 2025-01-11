@@ -35,6 +35,14 @@ function drawAllGrass() {
   }
 }
 
+function debounce(callback: () => void, delay: number) {
+  let timeoutId: number | undefined;
+  return () => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(callback, delay);
+  };
+}
+
 function init() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -44,6 +52,6 @@ function init() {
   drawAllGrass();
 }
 
-window.addEventListener('resize', init);
+window.addEventListener('resize', debounce(init, 100));
 
 init();
