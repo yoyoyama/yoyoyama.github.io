@@ -1,14 +1,17 @@
 import globals from 'globals';
-import pluginJs from '@eslint/js';
+import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import eslintConfigPrettier from 'eslint-config-prettier';
 
-/** @type {import('eslint').Linter.Config[]} */
-export default [
+export default tseslint.config(
   { ignores: ['dist'] },
-  { files: ['**/*.{js,mjs,cjs,ts}'] },
-  { languageOptions: { globals: globals.browser } },
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
+  {
+    files: ['**/*.ts'],
+    extends: [js.configs.recommended, tseslint.configs.recommended],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.browser,
+    },
+  },
   eslintConfigPrettier,
-];
+);
