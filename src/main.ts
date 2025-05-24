@@ -5,24 +5,21 @@ const ctx = canvas.getContext('2d')!;
 const total = import.meta.env.VITE_GITHUB_TOTAL_CONTRIBUTIONS;
 const color = '#2BC45E';
 const lineWidth = 2;
-const spacing = 4;
+const width = 16;
+const height = 10;
 
 function drawGrass(x: number, y: number, alpha: number) {
   ctx.globalAlpha = alpha;
 
   ctx.beginPath();
-  ctx.moveTo(x - spacing, y);
-  ctx.lineTo(x - spacing * 2, y - spacing * 2);
+  ctx.moveTo(x - width / 2, y - height / 1.25);
+  ctx.lineTo(x, y);
+  ctx.lineTo(x + width / 2, y - height / 1.25);
   ctx.stroke();
 
   ctx.beginPath();
   ctx.moveTo(x, y);
-  ctx.lineTo(x, y - spacing * 2.5);
-  ctx.stroke();
-
-  ctx.beginPath();
-  ctx.moveTo(x + spacing, y);
-  ctx.lineTo(x + spacing * 2, y - spacing * 2);
+  ctx.lineTo(x, y - height);
   ctx.stroke();
 }
 
