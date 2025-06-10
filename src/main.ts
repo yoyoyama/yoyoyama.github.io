@@ -33,10 +33,16 @@ function drawAllGrass() {
 }
 
 function debounce(callback: () => void, delay: number) {
-  let timeoutId: number | undefined;
+  let timeoutId: number | null = null;
+
   return () => {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(callback, delay);
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    timeoutId = setTimeout(() => {
+      callback();
+      timeoutId = null;
+    }, delay);
   };
 }
 
