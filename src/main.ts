@@ -1,4 +1,5 @@
 import './assets/css/style.css';
+import { debounce } from './utils';
 
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d')!;
@@ -30,20 +31,6 @@ function drawAllGrass() {
     const alpha = Math.random() * (1 - 0.1) + 0.1;
     drawGrass(x, y, alpha);
   }
-}
-
-function debounce(callback: () => void, delay: number) {
-  let timeoutId: number | null = null;
-
-  return () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    timeoutId = setTimeout(() => {
-      callback();
-      timeoutId = null;
-    }, delay);
-  };
 }
 
 function init() {
