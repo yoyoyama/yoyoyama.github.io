@@ -18,3 +18,8 @@ export function debounce(callback: () => void, delay: number) {
     }, delay);
   };
 }
+
+// -1 または 1 をランダムに返す
+export function randomSign() {
+  return Math.random() < 0.5 ? -1 : 1;
+}
